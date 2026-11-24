@@ -33,6 +33,7 @@ import gzip
 import io
 import json
 import os
+import re
 import statistics
 import sys
 import time
@@ -132,6 +133,10 @@ def group_of(item, tiers, n500):
     return "NSE outside Nifty 500"
 
 
+def _universe_doc():
+    return nse.read_json(universe.UNIVERSE, {}) or {}
+
+
 def build_list(which, tiers, log=print, allow_download=True):
     """[(sym, group, [yahoo tickers])] for --universe."""
     items, yahoo, info = universe.entries(log=log, allow_download=allow_download)
@@ -142,11 +147,16 @@ def build_list(which, tiers, log=print, allow_download=True):
         return [(s, group_of(by_sym.get(s, {"s": s, "x": "NSE"}), tiers, n500), []) for s in syms]
     if which == "nifty500":
         return [(s, group_of(by_sym.get(s, {"s": s, "x": "NSE"}), tiers, n500), []) for s in sorted(n500)]
+    bse_isin = {}
+    for r in (_universe_doc().get("bse_raw") or []):
+        bse_isin[re.sub(r"[^A-Z0-9&\-]", "", (r.get("sid") or "").upper()) or r.get("code", "")] = r.get("isin") or ""
     out = []
     for i in items:
         if i.get("k") == "index":
             continue
         g = group_of(i, tiers, n500)
+        if g == "BSE-only" and not bse_isin.get(i["s"][4:], "").startswith("INE"):
+            continue                                     # BSE list also carries MF units (INF...) etc.: equities only
         if which == "stocks" and g.startswith("Global"):
             continue
         if which == "global" and not g.startswith("Global"):
@@ -186,7 +196,10 @@ def fetch(todo, root, refetch_days=30, pause=0.4, log=print):
             if c:
                 nse.INDEX_YAHOO[sym] = c
             try:
-                s = nse.parse_chart(nse.yahoo_chart(sym, "10y", "1d"), any_currency=sym.startswith("GLB_"))
+                got_s = nse.parse_chart(nse.yahoo_chart(sym, "10y", "1d"), any_currency=sym.startswith("GLB_"))
+                if not any(x for x in got_s["c"] if x):
+                    raise nse.FetchError("Yahoo returned no prices for %s" % sym)
+                s = got_s
                 break
             except nse.FetchError as e:
                 err = e
@@ -376,6 +389,16 @@ def main(argv=None):
                           ("All stocks: illiquid", [r for r in stocks if r[9]]), ("All stocks", stocks)):
             if sel:
                 groups[name] = dict(summarise(sel), measure=measure_of("stock"))
+    have_n = {}
+    for _, g in have:
+        have_n[g] = have_n.get(g, 0) + 1
+    for g, v in groups.items():
+        if g in counts:
+            v["listed"], v["downloaded"] = counts[g], have_n.get(g, 0)
+    print("\nCOVERAGE (listed today -> downloaded from Yahoo -> enough history to read, 460+ bars):")
+    for g in GROUP_ORDER:
+        if g in counts:
+            print("  %-26s %5d -> %5d -> %5d" % (g, counts[g], have_n.get(g, 0), groups.get(g, {}).get("symbols", 0)))
     for g in GROUP_ORDER:
         if g in groups:
             report(g, groups[g], groups[g]["measure"])
