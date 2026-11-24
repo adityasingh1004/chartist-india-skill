@@ -1,0 +1,19 @@
+# downloaded market data and caches (never committed: see DISCLAIMER.md)
+skills/chartist-india/scripts/chartist/cache/
+skills/chartist-india/scripts/chartist/fundcache/
+skills/chartist-india/scripts/chartist/caldata/
+skills/chartist-india/scripts/chartist/data/universe.json
+skills/chartist-india/scripts/chartist/data/*.tmp
+probe/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

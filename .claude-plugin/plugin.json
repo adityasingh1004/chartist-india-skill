@@ -1,0 +1,18 @@
+{
+  "name": "chartist-india",
+  "version": "1.3.0",
+  "description": "Chart and company analysis for Indian stocks (NSE/BSE), indices, commodities and US yields, with each signal's own track record. Analysis only, not investment advice.",
+  "author": {
+    "name": "Aditya Kumar Singh"
+  },
+  "license": "MIT",
+  "keywords": [
+    "nse",
+    "bse",
+    "india",
+    "stocks",
+    "technical-analysis",
+    "charting"
+  ],
+  "repository": "https://github.com/adityasingh1004/chartist-india-skill"
+}

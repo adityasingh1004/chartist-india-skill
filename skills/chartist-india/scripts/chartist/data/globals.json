@@ -1,0 +1,243 @@
+{
+ "_note": "Yahoo tickers shown in Chartist search. y = Yahoo ticker, n = name, k = commodity|yield|bondfut|fx, g = group, u = unit. Tickers UNVERIFIED \u2014 CHECK MANUALLY.",
+ "items": [
+  {
+   "y": "BZ=F",
+   "n": "Brent crude oil (ICE futures)",
+   "k": "commodity",
+   "g": "Energy",
+   "u": "USD/bbl"
+  },
+  {
+   "y": "CL=F",
+   "n": "WTI crude oil (NYMEX futures)",
+   "k": "commodity",
+   "g": "Energy",
+   "u": "USD/bbl"
+  },
+  {
+   "y": "NG=F",
+   "n": "Natural gas Henry Hub (NYMEX futures)",
+   "k": "commodity",
+   "g": "Energy",
+   "u": "USD/MMBtu"
+  },
+  {
+   "y": "HO=F",
+   "n": "Heating oil / diesel (NYMEX futures)",
+   "k": "commodity",
+   "g": "Energy",
+   "u": "USD/gal"
+  },
+  {
+   "y": "RB=F",
+   "n": "RBOB gasoline (NYMEX futures)",
+   "k": "commodity",
+   "g": "Energy",
+   "u": "USD/gal"
+  },
+  {
+   "y": "GC=F",
+   "n": "Gold (COMEX futures)",
+   "k": "commodity",
+   "g": "Metals",
+   "u": "USD/oz"
+  },
+  {
+   "y": "SI=F",
+   "n": "Silver (COMEX futures)",
+   "k": "commodity",
+   "g": "Metals",
+   "u": "USD/oz"
+  },
+  {
+   "y": "PL=F",
+   "n": "Platinum (NYMEX futures)",
+   "k": "commodity",
+   "g": "Metals",
+   "u": "USD/oz"
+  },
+  {
+   "y": "PA=F",
+   "n": "Palladium (NYMEX futures)",
+   "k": "commodity",
+   "g": "Metals",
+   "u": "USD/oz"
+  },
+  {
+   "y": "HG=F",
+   "n": "Copper (COMEX futures)",
+   "k": "commodity",
+   "g": "Metals",
+   "u": "USD/lb"
+  },
+  {
+   "y": "ALI=F",
+   "n": "Aluminium (COMEX futures)",
+   "k": "commodity",
+   "g": "Metals",
+   "u": "USD/t"
+  },
+  {
+   "y": "ZC=F",
+   "n": "Corn (CBOT futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USc/bu"
+  },
+  {
+   "y": "ZW=F",
+   "n": "Wheat (CBOT futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USc/bu"
+  },
+  {
+   "y": "ZS=F",
+   "n": "Soybeans (CBOT futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USc/bu"
+  },
+  {
+   "y": "ZL=F",
+   "n": "Soybean oil (CBOT futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USc/lb"
+  },
+  {
+   "y": "ZM=F",
+   "n": "Soybean meal (CBOT futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USD/short t"
+  },
+  {
+   "y": "ZR=F",
+   "n": "Rough rice (CBOT futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USD/cwt"
+  },
+  {
+   "y": "KC=F",
+   "n": "Coffee arabica (ICE futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USc/lb"
+  },
+  {
+   "y": "SB=F",
+   "n": "Sugar No.11 (ICE futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USc/lb"
+  },
+  {
+   "y": "CC=F",
+   "n": "Cocoa (ICE futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USD/t"
+  },
+  {
+   "y": "CT=F",
+   "n": "Cotton No.2 (ICE futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USc/lb"
+  },
+  {
+   "y": "OJ=F",
+   "n": "Orange juice (ICE futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USc/lb"
+  },
+  {
+   "y": "LE=F",
+   "n": "Live cattle (CME futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USc/lb"
+  },
+  {
+   "y": "HE=F",
+   "n": "Lean hogs (CME futures)",
+   "k": "commodity",
+   "g": "Agri",
+   "u": "USc/lb"
+  },
+  {
+   "y": "^IRX",
+   "n": "US 13-week T-bill yield",
+   "k": "yield",
+   "g": "Yields",
+   "u": "%"
+  },
+  {
+   "y": "^FVX",
+   "n": "US 5-year Treasury yield",
+   "k": "yield",
+   "g": "Yields",
+   "u": "%"
+  },
+  {
+   "y": "^TNX",
+   "n": "US 10-year Treasury yield",
+   "k": "yield",
+   "g": "Yields",
+   "u": "%"
+  },
+  {
+   "y": "^TYX",
+   "n": "US 30-year Treasury yield",
+   "k": "yield",
+   "g": "Yields",
+   "u": "%"
+  },
+  {
+   "y": "ZT=F",
+   "n": "US 2-year Treasury note futures (price)",
+   "k": "bondfut",
+   "g": "Bond futures",
+   "u": "pts"
+  },
+  {
+   "y": "ZF=F",
+   "n": "US 5-year Treasury note futures (price)",
+   "k": "bondfut",
+   "g": "Bond futures",
+   "u": "pts"
+  },
+  {
+   "y": "ZN=F",
+   "n": "US 10-year Treasury note futures (price)",
+   "k": "bondfut",
+   "g": "Bond futures",
+   "u": "pts"
+  },
+  {
+   "y": "ZB=F",
+   "n": "US Treasury bond futures (price)",
+   "k": "bondfut",
+   "g": "Bond futures",
+   "u": "pts"
+  },
+  {
+   "y": "DX-Y.NYB",
+   "n": "US dollar index (DXY)",
+   "k": "fx",
+   "g": "FX",
+   "u": "index"
+  },
+  {
+   "y": "INR=X",
+   "n": "USD/INR (Yahoo)",
+   "k": "fx",
+   "g": "FX",
+   "u": "INR"
+  }
+ ]
+}
