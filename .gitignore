@@ -2,6 +2,8 @@
 skills/chartist-india/scripts/chartist/cache/
 skills/chartist-india/scripts/chartist/fundcache/
 skills/chartist-india/scripts/chartist/caldata/
+skills/chartist-india/scripts/chartist/data/tiers/
+skills/chartist-india/scripts/chartist/calibration-sample.json
 skills/chartist-india/scripts/chartist/data/universe.json
 skills/chartist-india/scripts/chartist/data/*.tmp
 probe/

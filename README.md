@@ -40,7 +40,7 @@ Then just ask about a chart, or type `/chartist-india`.
 
 ## The honest part
 
-The overall verdict was calibrated on 49 Nifty 50 stocks from 2016 to 2026 (3,474 point-in-time readings, default settings): stocks it read as bullish did **not** beat those it read as bearish (−0.3 points over 60 days). The skill tells Claude to present the verdict as a description of the chart, not a forecast, and to lead with each signal's own track record instead.
+The overall verdict is calibrated point-in-time, group by group (Nifty 100, Midcap 150, Smallcap 250, the rest of NSE, SME, BSE-only, commodities, yields, FX; liquid and illiquid stocks), and every analysis carries the track record for its own group. The first run, on 49 Nifty 50 stocks from 2016 to 2026 (3,474 readings), found no edge (bullish minus bearish: −0.3 points over 60 days). Re-run it with `python skills/chartist-india/scripts/chartist/calibrate.py --fetch` (add `--sample 10` for a quick test). The skill tells Claude to present the verdict as a description of the chart, not a forecast, and to lead with each signal's own track record instead.
 
 ## Rules the skill gives Claude
 

@@ -344,6 +344,42 @@ def to_bars(rows):
     return [out[k] for k in sorted(out)]
 
 
+_CAL = {"mtime": None, "doc": {}}
+CAL_GLOBAL = {"commodity": "Global commodity", "yield": "Global yield", "bondfut": "Global bond futures", "fx": "Global FX"}
+
+
+def calibration_doc():
+    """chartist/calibration.json, re-read only when the file changes."""
+    path = os.path.join(HERE, "calibration.json")
+    try:
+        mt = os.path.getmtime(path)
+    except OSError:
+        return {}
+    if _CAL["mtime"] != mt:
+        _CAL["doc"], _CAL["mtime"] = nse.read_json(path) or {}, mt
+    return _CAL["doc"]
+
+
+def calibration_for(sym, kind, meta):
+    """The verdict's track record for the group this security belongs to (see chartist/calibrate.py)."""
+    doc = calibration_doc()
+    if not doc:
+        return {"group": "this security", "untested": True}
+    if doc.get("version", 1) < 2:                       # first calibration file: Nifty 50 stocks only
+        return dict(doc.get("summary") or {}, group="Nifty 50 stocks", measure="60-day return minus the Nifty 50",
+                    untested=kind in ("global", "bse", "index"))
+    g = (doc.get("group_of") or {}).get(sym)
+    if not g:
+        g = CAL_GLOBAL.get(meta.get("k"), "Global other") if kind == "global" else \
+            "BSE-only" if kind == "bse" else "indices" if kind == "index" else \
+            "NSE SME" if meta.get("x") == "NSE SME" else None
+    s = (doc.get("groups") or {}).get(g) if g else None
+    if not s:
+        return {"group": g or "this security", "untested": True, "built": doc.get("built")}
+    return dict({k: v for k, v in s.items() if k != "buckets"}, group=g, built=doc.get("built"),
+                basis=doc.get("basis"), untested=False)
+
+
 def analyse(sym, tf, symbols, params=None):
     bars, source, note = fetch_bars(sym)
     if len(bars) < 80:
@@ -379,9 +415,11 @@ def analyse(sym, tf, symbols, params=None):
         if (m.get("y") or "").endswith("=F"):
             notes.append("Continuous front-month futures: a jump on a contract roll is not a real price gap, "
                          "and patterns or gaps across a roll date can be false.")
-    if kind in ("global", "bse"):
-        notes.append("The verdict was calibrated on Nifty 50 stocks only; it has never been tested on this %s."
-                     % ("instrument" if kind == "global" else "BSE-only stock"))
+    cal = calibration_for(sym, kind, m)
+    if cal.get("untested"):
+        notes.append("The verdict has not been calibrated on %s: how far to trust it here is unknown." % cal["group"])
+    elif cal.get("finding") == "too few":
+        notes.append("Too few past readings on %s to judge the verdict." % cal["group"])
     r["kind"] = "stock" if kind in ("stock", "bse") else kind
     r["exchange"] = "BSE" if kind == "bse" or sym == "IDX_SENSEX" else m.get("x") or "Yahoo" if kind == "global" else "NSE"
     r["currency"] = cached_ccy(sym)
@@ -397,8 +435,7 @@ def analyse(sym, tf, symbols, params=None):
         r = relabel(r, P)
     r["bars"] = use
     r["generated"] = nse.now_ist().replace(tzinfo=None).isoformat(timespec="seconds")
-    cal = nse.read_json(os.path.join(HERE, "calibration.json"))
-    r["calibration"] = (cal or {}).get("summary")
+    r["calibration"] = cal
     return r
 
 

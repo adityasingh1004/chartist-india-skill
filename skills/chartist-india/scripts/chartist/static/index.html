@@ -1073,9 +1073,13 @@ function signalsTable(d) {
 }
 
 function calib(c) {
-  if (!c || c.bull_minus_bear_x60 == null) return `<p class="calib">The verdict has not been calibrated yet: run chartist/calibrate.py to see whether bullish readings have beaten bearish ones in the past.</p>`;
-  const g = c.bull_minus_bear_x60, ok = g > 1 && (c.halves || []).every(h => h != null && h > 0);
-  return `<p class="calib ${ok ? "" : "warn"}"><b>Verdict track record:</b> across past Nifty 50 readings, stocks read as bullish beat those read as bearish by ${g > 0 ? "+" : ""}${g.toFixed(1)} points over the next 60 days${c.halves ? ` (halves ${c.halves.map(h => h == null ? "n/a" : (h > 0 ? "+" : "") + h.toFixed(1)).join(" and ")})` : ""}. ${ok ? "It has separated winners from losers." : "It has not reliably done so: read the verdict as a description of the chart, not a forecast."}</p>`;
+  const grp = c && c.group ? esc(c.group) : "this security";
+  if (!c || c.untested) return `<p class="calib warn"><b>Verdict track record:</b> not tested on ${grp} yet (run chartist/calibrate.py). Read the verdict as a description of the chart, not a forecast.</p>`;
+  if (c.bull_minus_bear_x60 == null || c.finding === "too few") return `<p class="calib warn"><b>Verdict track record:</b> too few past readings on ${grp} to judge it. Read the verdict as a description of the chart, not a forecast.</p>`;
+  const g = c.bull_minus_bear_x60, ok = c.finding ? c.finding === "separates" : g > 1 && (c.halves || []).every(h => h != null && h > 0);
+  const hv = c.halves ? `; halves ${c.halves.map(h => h == null ? "n/a" : (h > 0 ? "+" : "") + h.toFixed(1)).join(" and ")}` : "";
+  const n = c.readings ? `${c.readings.toLocaleString("en-IN")} past readings${c.symbols ? ` on ${c.symbols.toLocaleString("en-IN")} securities` : ""}` : "past readings";
+  return `<p class="calib ${ok ? "" : "warn"}"><b>Verdict track record, ${grp}:</b> across ${n}, those read as bullish ${g >= 0 ? "beat" : "trailed"} those read as bearish by ${Math.abs(g).toFixed(1)} points (${c.measure ? esc(c.measure) : "60-day returns"}${hv}). ${ok ? "It has separated winners from losers in this group." : "It has not reliably done so: read the verdict as a description of the chart, not a forecast."}</p>`;
 }
 
 function ichiText(i) {
@@ -1248,7 +1252,7 @@ function explainSections(d) {
 
   const cal = d.calibration;
   sec(ICON.scale, "How much to trust this", "bear", [
-    cal && cal.bull_minus_bear_x60 != null ? `When this verdict was tested on past Nifty 50 charts, stocks it read as bullish did ${cal.bull_minus_bear_x60 >= 0 ? "only " + cal.bull_minus_bear_x60.toFixed(1) + " points better" : Math.abs(cal.bull_minus_bear_x60).toFixed(1) + " points worse"} than those it read as bearish over the next 60 days. Use it to describe the chart, not to predict the price.` : "The verdict has not been tested against past outcomes yet.",
+    cal && !cal.untested && cal.bull_minus_bear_x60 != null && cal.finding !== "too few" ? `When this verdict was tested on past charts of ${esc(cal.group)}, those it read as bullish did ${cal.bull_minus_bear_x60 >= 0 ? (cal.finding === "separates" ? "" : "only ") + cal.bull_minus_bear_x60.toFixed(1) + " points better" : Math.abs(cal.bull_minus_bear_x60).toFixed(1) + " points worse"} than those it read as bearish over the next 60 days. ${cal.finding === "separates" ? "That is a real but modest edge; it is still not a price forecast." : "Use it to describe the chart, not to predict the price."}` : `The verdict has not been tested on ${cal && cal.group ? esc(cal.group) : "this security"} against past outcomes${cal && cal.finding === "too few" ? " often enough to judge" : " yet"}. Use it to describe the chart, not to predict the price.`,
     "Everything here is fixed rules applied to prices. It is not investment advice and not an instruction to buy or sell."]);
 
   return S;

@@ -43,13 +43,14 @@ Use `python` (Windows: `py`, macOS/Linux: `python3`). Python 3.10+ is required; 
 - `signals`: each signal's `reading` is its track record on this security (cases, return after N bars vs an ordinary stretch); `active` marks signals firing now
 - `scorecard`: each indicator's reading out of 10 plus a separate `reliability` on this security. There is deliberately no total
 - `fibonacci`, `ichimoku`, `momentum`, `volatility`, `volume`, `relative` (vs Nifty 50), `regime`
-- `note`: caveats from the app (custom settings, yield chart, futures roll, uncalibrated instrument). Always pass these on.
+- `calibration`: the verdict's track record for this security's group (see rule 3)
+- `note`: caveats from the app (custom settings, yield chart, futures roll, uncalibrated or thinly tested group). Always pass these on.
 
 ## Rules when reporting
 
 1. **Analysis, not advice.** Never turn a reading into buy/sell/hold advice, entry or exit instructions, price targets for the user to act on, or position sizes. If asked "should I buy", describe what the chart shows and say the tool is not investment advice.
 2. **Lead with the track record.** When a signal is active, say how it has behaved on that security before. If its reading says it "has worked AGAINST its usual meaning", "no better than an ordinary day" or "too few cases", say so plainly.
-3. **The verdict is a description, not a forecast.** It was calibrated on Nifty 50 stocks (2016-2026, default settings) and did not separate future winners from losers (bullish minus bearish: -0.3 points over 60 days). Mention this when the user leans on the verdict.
+3. **The verdict is a description, not a forecast.** The `calibration` field gives the verdict's past track record for this security's group (Nifty 100, Midcap 150, Smallcap 250, other NSE, SME, BSE-only, commodity, yield, FX): `group`, `readings`, `bull_minus_bear_x60` and `finding`. Quote it when the user leans on the verdict. If `finding` is "does not separate" or "too few", or `untested` is true, say the verdict has not predicted returns for that group. Even "separates" is a modest historical edge measured on today's lists (survivorship), never a forecast.
 4. **Cite the data.** Give the source and the date of the last bar with any price or level. Yahoo prices are unofficial and can lag; NSE/Yahoo company fields are unofficial too. Do not add prices, fundamentals or news from memory.
 5. **Instrument caveats.** On a yield chart, "bullish" means yields rising (bond prices falling). Futures tickers (`=F`) are front-month continuous series; roll-date jumps are not real gaps. Stocks with fewer than 80 trading days cannot be read yet.
 6. **Errors are answers.** If the tool fails (no data, site changed, new listing), report the message and what the user can do; do not fill the gap yourself.
